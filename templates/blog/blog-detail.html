@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+</head>
+<body>
+<section class="site-banner padding-small bg-light-grey"  style="background: url({% static 'images/hero-image1.jpg' %}) no-repeat; background-position: top;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumbs">
+                    <span class="item">
+                        <a href="{% url 'home' %}">Home /</a>
+                    </span>
+                    <span class="item">
+                        <a href="{% url 'blog' %}">Blog /</a>
+                    </span>
+                    <span class="item">Single post</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="main-content d-flex flex-wrap padding-large">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="post-meta">
+                    <span class="post-date">{{ blog.created_date|date:"F d,Y" }}</span> / <a
+                        class="blog-categories">{{blog.topic}}</a>
+                </div>
+                <h1 class="page-title">{{blog.title}}</h1>
+                <div class="feature-image">
+                    <img src="{{blog.image.url}}" alt="post image" class="jarallax-img">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="post-content">
+                    <p><strong>{{blog.text}}</p>
+                    <p>
+                        <strong>Are you amazed ?</strong>
+                    </p>
+
+
+
+                </div>
+                <div class="social-links d-flex margin-small">
+                    <div class="element-title">Share:</div>
+                    <ul class="d-flex list-unstyled">
+                        <li>
+                            <a href="#"><i class="icon icon-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="icon icon-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="icon icon-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="icon icon-youtube-play"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="mt-5">
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab"
+                    aria-controls="description" aria-selected="false">Description</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
+                    aria-controls="reviews" aria-selected="true">Reviews</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3" id="productTabsContent">
+            <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
+                <h2>Description</h2>
+                <p>{{ product.description }}</p>
+            </div>
+            <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                <h2>Reviews</h2>
+                {% for review in reviews %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <p class="card-text"><strong>{{ review.author }}:</strong> <span class="text-secondary">{{ review.text }}</span></p>
+                        <p class="card-text"><small class="text-muted">Reviewed on {{ review.created_date|date:"F d, Y"}}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if request.user.is_authenticated %}
+    <div class="mt-5">
+        <h2>Leave a Review</h2>
+        <form method="post" action="{% url 'add-blog-review' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="hidden" name="user_id" class="form-control" value="{{ request.user.id }}">
+                <input type="hidden" name="blog_id" class="form-control" value="{{ blog.id }}">
+            </div>
+            <div class="form-group">
+                <label for="review_text">Review:</label>
+                <textarea class="form-control" id="review_text" rows="4" name="review_text" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% else %}
+    <a href="{% url 'login' %}"><button class="btn btn-dark">Leave a comment</button></a>
+    {% endif %}
+    
+</div>
+</body>
+</html>
+{% endblock %}

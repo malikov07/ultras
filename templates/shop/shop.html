@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="site-banner jarallax min-height300 padding-large"
+    style="background: url({% static 'images/hero-image.jpg' %}) no-repeat; background-position: top;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-title">Shop page</h1>
+                <div class="breadcrumbs">
+                    <span class="item">
+                        <a href="{% url 'home' %}">Home /</a>
+                    </span>
+                    <span class="item">Shop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="shopify-grid padding-large">
+    <div class="container">
+        <div class="row">
+
+            <section id="selling-products" class="col-md-9 product-store">
+                <div class="container">
+                    <ul class="tabs list-unstyled">
+                        <li data-tab-target="#all" class="active tab"><a href="{% url 'shop' %}">All</a></li>
+                        {% for typ in types %}
+                        <li data-tab-target="#all" class="active tab"><a
+                                href="{% url 'shop' %}?typ={{typ.0}}">{{typ.0}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        <div id="all" data-tab-content class="active">
+                            <div class="row d-flex flex-wrap">
+                                {% if request.user.is_superuser and request.user.is_authenticated %}
+                                <a href="{% url 'shop-create' %}" class="btn btn-light mb-3">Create Product</a>
+                                {% endif %}
+                                {% if request.user.is_superuser and request.user.is_authenticated %}
+
+                                {% for product in products %}
+                                <div class="product-item col-lg-4 col-md-6 col-sm-6">
+                                    <a href="{% url 'shop-detail' product.id %}">
+                                        <div class="image-holder">
+
+                                            <img src="{{product.image.url}}" alt="Books" class="product-image">
+                                        </div>
+                                        <div class="cart-concern">
+                                            <div class="cart-button d-flex justify-content-between align-items-center">
+                                                {% if request.user.is_authenticated %}
+                                                <form method="get" action="{% url 'add-to-cart' %}">
+                                                    <input type="hidden" name="user_id" value="{{request.user.id}}">
+                                                    <input type="hidden" name="product_id" value="{{product.id}}">
+                                                    <button type="submit"
+                                                        class="btn-wrap cart-link d-flex align-items-center">add to cart
+                                                        <i class="icon icon-arrow-io"></i></button>
+                                                </form>
+                                                {% else %}
+                                                <a href="{% url 'login' %}"><button type="button"
+                                                        class="btn-wrap cart-link d-flex align-items-center">add to
+                                                        cart <i class="icon icon-arrow-io"></i>
+                                                    </button></a>
+                                                {% endif %}
+
+                                                </button>
+                                                <button type="button" class="view-btn tooltip
+                                                                        d-flex">
+                                                    <i class="icon icon-screen-full"></i>
+                                                    <span class="tooltip-text">Quick view</span>
+                                                </button>
+                                                <button type="button" class="wishlist-btn">
+                                                    <i class="icon icon-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <h3 class="product-title">
+                                                <a href="{% url 'shop-detail' product.id %}">{{product.name}}</a>
+                                            </h3>
+                                            <div class="item-price text-primary">${{product.price}}</div>
+                                            <div class="item-price ">{{product.brand}}</div>
+                                            <a href="{% url 'shop-update' product.id %}"
+                                                class="btn btn-warning">Update</a>
+                                            <a href="{% url 'shop-delete' product.id %}"
+                                                class="btn btn-danger">Delete</a>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+
+                                {% else %}
+
+                                {% for product in products %}
+                                <div class="product-item col-lg-4 col-md-6 col-sm-6">
+                                    <a href="{% url 'shop-detail' product.id %}">
+                                        <div class="image-holder">
+                                            <img src="{{product.image.url}}" alt="Books" class="product-image">
+                                        </div>
+                                        <div class="cart-concern">
+                                            <div class="cart-button d-flex justify-content-between align-items-center">
+                                                {% if request.user.is_authenticated %}
+                                                <form method="get" action="{% url 'add-to-cart' %}">
+                                                    <input type="hidden" name="user_id" value="{{request.user.id}}">
+                                                    <input type="hidden" name="product_id" value="{{product.id}}">
+                                                    <button type="submit"
+                                                        class="btn-wrap cart-link d-flex align-items-center">add to cart
+                                                        <i class="icon icon-arrow-io"></i>
+                                                </form>
+                                                {% else %}
+                                                <a href="{% url 'login' %}"><button type="button"
+                                                        class="btn-wrap cart-link d-flex align-items-center">add to
+                                                        cart <i class="icon icon-arrow-io"></i>
+                                                    </button></a>
+                                                {% endif %}
+                                                <button type="button" class="view-btn tooltip
+                                    d-flex">
+                                                    <i class="icon icon-screen-full"></i>
+                                                    <span class="tooltip-text">Quick view</span>
+                                                </button>
+                                                <button type="button" class="wishlist-btn">
+                                                    <i class="icon icon-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <h3 class="product-title">
+                                                <a href="{% static 'single-product.html' %}">{{product.name}}</a>
+                                            </h3>
+                                            <div class="item-price text-primary">${{product.price}}</div>
+                                            <div class="item-price ">{{product.brand}}</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                    <nav class="navigation paging-navigation text-center padding-medium" role="navigation">
+                        <div class="pagination loop-pagination d-flex justify-content-center">
+                            <a href="#" class="pagination-arrow d-flex align-items-center">
+                                <i class="icon icon-arrow-left"></i>
+                            </a>
+                            <span aria-current="page" class="page-numbers current">1</span>
+                            <a class="page-numbers" href="#">2</a>
+                            <a class="page-numbers" href="#">3</a>
+                            <a href="#" class="pagination-arrow d-flex align-items-center">
+                                <i class="icon icon-arrow-right"></i>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </section>
+
+            <aside class="col-md-3">
+                <div class="sidebar">
+                    <div class="widgets widget-menu">
+                        <div class="widget-search-bar">
+                            <form role="search" method="get" class="d-flex">
+                                <input class="search-field" placeholder="Search" type="text" name="search">
+                                <button type="submit" class="btn btn-dark"><i class="icon icon-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="widgets widget-product-tags">
+                        <h5 class="widget-title">Colors</h5>
+                        <ul class="product-tags sidebar-list list-unstyled">
+                            {% for c in colors %}
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?color={{c.0}}">{{c.1}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="widgets widget-product-brands">
+                        <h5 class="widget-title">Brands</h5>
+                        <ul class="product-tags sidebar-list list-unstyled">
+                            {% for brand in brands%}
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?brand={{brand.name}}">{{brand.name}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="widgets widget-price-filter">
+                        <h5 class="widget-title">Filter By Price</h5>
+                        <ul class="product-tags sidebar-list list-unstyled">
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?price=20">Less than $20</a>
+                            </li>
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?price=50">$20- $50</a>
+                            </li>
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?price=100">$50- $100</a>
+                            </li>
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?price=150">$100- $150</a>
+                            </li>
+                            <li class="tags-item">
+                                <a href="{% url 'shop' %}?price=300">$150- $300</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

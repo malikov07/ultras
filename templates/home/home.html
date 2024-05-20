@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/tab.css' %}">
+<section id="billboard" class="overflow-hidden">
+
+    <button class="button-prev">
+        <i class="icon icon-chevron-left"></i>
+    </button>
+    <button class="button-next">
+        <i class="icon icon-chevron-right"></i>
+    </button>
+    <div class="swiper main-swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"
+                style="background-image: url('{% static 'images/banner1.jpg' %}');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                <div class="banner-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="banner-title">Summer Collection</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet,
+                                    libero ipsum enim pharetra hac.</p>
+                                <div class="btn-wrap">
+                                    <a href="{% url 'shop' %}" class="btn btn-light btn-medium d-flex align-items-center"
+                                        tabindex="0">Shop it now <i class="icon icon-arrow-io"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide"
+                style="background-image: url('{% static 'images/banner2.jpg' %}');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                <div class="banner-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="banner-title">Casual Collection</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet,
+                                    libero ipsum enim pharetra hac.</p>
+                                <div class="btn-wrap">
+                                    <a href="{% url 'shop' %}"
+                                        class="btn btn-light btn-light-arrow btn-medium d-flex align-items-center"
+                                        tabindex="0">Shop it now <i class="icon icon-arrow-io"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="featured-products" class="product-store padding-large">
+    <div class="container">
+        <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="btn-wrap">
+                <a href="{% url 'shop' %}" class="d-flex align-items-center">View all products <i
+                        class="icon icon icon-arrow-io"></i></a>
+            </div>
+        </div>
+        <div class="swiper product-swiper overflow-hidden">
+            <div class="swiper-wrapper">
+                {% for product in best_products %}
+                <div class="swiper-slide">
+                    <div class="product-item">
+                        <div class="image-holder">
+                            <img src="{{product.image.url}}" alt="Books" class="product-image">
+                        </div>
+                        <div class="cart-concern">
+                            <div class="cart-button d-flex justify-content-between align-items-center">
+                                {% if request.user.is_authenticated %}
+                                <form method="get" action="{% url 'add-to-cart' %}">
+                                    <input type="hidden" name="user_id" value="{{request.user.id}}">
+                                    <input type="hidden" name="product_id" value="{{product.id}}">
+                                    <button type="submit" class="btn-wrap cart-link d-flex align-items-center">add to cart <i
+                                        class="icon icon-arrow-io"></i>
+                                </form>
+                                {% else %}
+                                    <a href="{% url 'login' %}"><button type="button" class="btn-wrap cart-link d-flex align-items-center">add to
+                                    cart <i class="icon icon-arrow-io"></i>
+                                </button></a>
+                                {% endif %}
+                                
+                                <button type="button" class="view-btn tooltip
+                        d-flex">
+                                    <i class="icon icon-screen-full"></i>
+                                    <span class="tooltip-text">Quick view</span>
+                                </button>
+                                <button type="button" class="wishlist-btn">
+                                    <i class="icon icon-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-detail">
+                            <h3 class="product-title">
+                                <a href="{% url 'shop-detail' product.id %}">{{product.name}}</a>
+                            </h3>
+                            <span class="item-price text-primary">${{product.price}}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<section id="latest-collection">
+    <div class="container">
+        <div class="product-collection row">
+            <div class="col-lg-7 col-md-12 left-content">
+                <div class="collection-item">
+                    <div class="products-thumb">
+                        <img src="{% static 'images/collection-item1.jpg' %}" alt="collection item"
+                            class="large-image image-rounded">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 product-entry">
+                        <div class="categories">casual collection</div>
+                        <h3 class="item-title">street wear.</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.
+                        </p>
+                        <div class="btn-wrap">
+                            <a href="{% url 'shop' %}" class="d-flex align-items-center">shop collection <i
+                                    class="icon icon-arrow-io"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 right-content flex-wrap">
+                <div class="collection-item top-item">
+                    <div class="products-thumb">
+                        <img src="{% static 'images/collection-item2.jpg' %}" alt="collection item" class="small-image image-rounded">
+                    </div>
+                    <div class="col-md-6 product-entry">
+                        <div class="categories">Basic Collection</div>
+                        <h3 class="item-title">Basic shoes.</h3>
+                        <div class="btn-wrap">
+                            <a href="{% url 'shop' %}" class="d-flex align-items-center">shop collection <i
+                                    class="icon icon-arrow-io"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collection-item bottom-item">
+                    <div class="products-thumb">
+                        <img src="{% static 'images/collection-item3.jpg' %}" alt="collection item" class="small-image image-rounded">
+                    </div>
+                    <div class="col-md-6 product-entry">
+                        <div class="categories">Best Selling Product</div>
+                        <h3 class="item-title">woolen hat.</h3>
+                        <div class="btn-wrap">
+                            <a href="{% url 'shop' %}" class="d-flex align-items-center">shop collection <i
+                                    class="icon icon-arrow-io"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="subscribe" class="padding-large">
+    <div class="container">
+        <div class="row">
+            <div class="block-text col-md-6">
+                <div class="section-header">
+                    <h2 class="section-title">Get 25% off Discount Coupons</h2>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictumst amet, metus, sit massa posuere
+                    maecenas. At tellus ut nunc amet vel egestas.</p>
+            </div>
+            <div class="subscribe-content col-md-6">
+                <form id="form" class="d-flex justify-content-between" action="{% url 'register' %}">
+                    <input type="text" name="email" placeholder="Enter your email addresss here">
+                    <button class="btn btn-dark">Subscribe Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="selling-products" class="product-store bg-light-grey padding-large">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Best selling products</h2>
+        </div>
+        
+        <div class="container mt-5">
+            <h1 class="mb-4">Types of Clothes</h1>
+            <div class="row mb-3">
+                <ul class="tabs list-unstyled">
+                    <!-- <li  class="col-1 clothing-type" data-type="tshirt" >All</li> -->
+                    {% for type, products in products_by_type.items %}
+                    <li  class="col-md-1 ms-1 clothing-type" data-type="{{type}}">{{type}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="clothes-container">
+                {% for type, products in products_by_type.items %}
+                <div class="clothing-item" data-type="{{ type }}">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            {% for product in products %}
+                            <div class=" col-3">
+                                <div class="product-item">
+                                    <div class="image-holder">
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                                    </div>
+                                    <div class="cart-concern">
+                                        <div class="cart-button d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn-wrap cart-link d-flex align-items-center">add to
+                                                cart <i class="icon icon-arrow-io"></i>
+                                            </button>
+                                            <button type="button" class="view-btn tooltip d-flex">
+                                                <i class="icon icon-screen-full"></i>
+                                                <span class="tooltip-text">Quick view</span>
+                                            </button>
+                                            <button type="button" class="wishlist-btn">
+                                                <i class="icon icon-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <h3 class="product-title">
+                                            <a href="{% url 'shop-detail' product.id %}">{{ product.name }}</a>
+                                        </h3>
+                                        <span class="item-price text-primary">${{ product.price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="flash-sales" class="product-store padding-large">
+
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Flash sales</h2>
+        </div>
+        <div class="swiper product-swiper flash-sales overflow-hidden">
+
+            <div class="swiper-wrapper">
+                {% for sale in sales %}
+                <div class="swiper-slide">
+                    <div class="product-item">
+                        <img src="{{sale.product.image.url}}" alt="Books" class="product-image">
+                        <div class="cart-concern">
+                            <div class="cart-button d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn-wrap cart-link d-flex align-items-center">add to
+                                    cart <i class="icon icon-arrow-io"></i>
+                                </button>
+                                <button type="button" class="view-btn tooltip
+                        d-flex">
+                                    <i class="icon icon-screen-full"></i>
+                                    <span class="tooltip-text">Quick view</span>
+                                </button>
+                                <button type="button" class="wishlist-btn">
+                                    <i class="icon icon-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="discount">{{sale.discount}}% Off</div>
+                        <div class="product-detail">
+                            <h3 class="product-title">
+                                <a href="single-product.html">{{sale.product.name}}</a>
+                            </h3>
+                            <div class="item-price text-primary">
+                                <del class="prev-price">${{sale.product.price}}</del>${{sale.new_price}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            <div class="swiper-pagination"></div>
+
+        </div>
+    </div>
+</section>
+
+<section class="shoppify-section-banner">
+    <div class="container">
+        <div class="product-collection">
+            <div class="left-content collection-item">
+                <div class="products-thumb">
+                    <img src="{% static 'images/model.jpg' %}" alt="collection item" class="large-image image-rounded">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 product-entry">
+                    <div class="categories">Denim collection</div>
+                    <h3 class="item-title">The casual selection.</h3>
+                    <p>Vel non viverra ligula odio ornare turpis mauris. Odio aliquam, tincidunt ut vitae elit
+                        risus. Tempor egestas condimentum et ac rutrum dui, odio.</p>
+                    <div class="btn-wrap">
+                        <a href="{% url 'shop' %}" class="d-flex align-items-center">shop collection <i
+                                class="icon icon-arrow-io"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quotation" class="align-center padding-large">
+    <div class="inner-content">
+        <h2 class="section-title divider">Quote of the day</h2>
+        <blockquote>
+            <q>It's true, I don't like the whole cutoff-shorts-and-T-shirt look, but I think you can look fantastic
+                in casual clothes.</q>
+            <div class="author-name">- Dr. Seuss</div>
+        </blockquote>
+    </div>
+</section>
+
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const types = document.querySelectorAll('.clothing-type');
+        const items = document.querySelectorAll('.clothing-item');
+
+        types.forEach(type => {
+            type.addEventListener('click', function () {
+                const selectedType = this.getAttribute('data-type');
+
+                types.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                items.forEach(item => {
+                    if (item.getAttribute('data-type') === selectedType) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Show the first type by default
+        if (types.length > 0) {
+            types[0].click();
+        }
+    });
+</script>
+{% endblock %}

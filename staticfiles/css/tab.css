@@ -1,0 +1,82 @@
+
+body {
+    background-color: #f8f9fa;
+}
+.clothing-type {
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #ffffff;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.clothing-type:hover {
+    background-color: #e2e6ea;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.clothing-type.active {
+    background-color: #007bff;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.clothing-item {
+    display: none;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin-bottom: 15px;
+    transition: transform 0.3s;
+}
+.clothing-item.active {
+    display: block;
+    transform: scale(1.05);
+}
+.swiper-slide {
+    padding: 10px;
+}
+.product-item {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #ffffff;
+    transition: box-shadow 0.3s;
+}
+.product-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.image-holder {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.product-image {
+    max-width: 100%;
+    height: auto;
+}
+.cart-concern {
+    margin-top: 10px;
+}
+.cart-button button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+.cart-button button i {
+    margin-left: 5px;
+}
+.product-detail {
+    margin-top: 10px;
+    text-align: center;
+}
+.product-title a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.2rem;
+}
+.item-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007bff;
+}
